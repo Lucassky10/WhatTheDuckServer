@@ -28,6 +28,9 @@ private:
 
     bool m_Draw, m_Sound;
 
+    /** Le canard a été découvert **/
+    bool m_isDiscovered = false;
+
 public:
 
     /** constructeur, crée le maillage */
@@ -62,6 +65,11 @@ public:
     vec3& getOrientation();
 
     /**
+     * retourne si le canard a été découvert
+     */
+    bool isDiscovered();
+
+    /**
      * affecte la position % scène du cube
      * @param vec3 pos position
      */
@@ -82,6 +90,11 @@ public:
      * @param light : instance de Light spécifiant les caractéristiques de la lampe
      */
     void setLight(Light* light);
+
+    /**
+     * définit si le canard a été découvert
+     */
+    void setIsDiscovered(bool isDiscovered);
 };
 
 #endif

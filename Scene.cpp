@@ -189,20 +189,22 @@ void Scene::onDrawFrame()
 
     mat4::translate(tmp_v, m_MatV, m_Duck_ch1->getPosition());
     vec4::transformMat4(pos, vec4::fromValues(0,0,0,1), tmp_v);
-    if (vec4::length(pos) < 5) {
+    if (!m_Duck_ch1->isDiscovered() && vec4::length(pos) < 5) {
         //TODO : N'afficher qu'une fois ce message
     	std::cout<<"Canard 1 trouvé !" <<std::endl;
     	m_Duck_ch1->setDraw(true);
     	m_Duck_ch1->setSound(false);
+        m_Duck_ch1->setIsDiscovered(true);
     }
 
     mat4::translate(tmp_v, m_MatV, m_Duck_ch2->getPosition());
     vec4::transformMat4(pos, vec4::fromValues(0,0,0,1), tmp_v);
-    if (vec4::length(pos) < 5) {
+    if (!m_Duck_ch2->isDiscovered() && vec4::length(pos) < 5) {
         //TODO : N'afficher qu'une fois ce message
     	std::cout<<"Canard 2 trouvé !" <<std::endl;
     	m_Duck_ch2->setDraw(true);
     	m_Duck_ch2->setSound(false);
+        m_Duck_ch2->setIsDiscovered(true);
     }
 
     /** gestion des lampes **/

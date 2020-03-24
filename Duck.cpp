@@ -60,10 +60,10 @@ Duck::Duck(): Mesh("Duck")
     alSource3f(source, AL_VELOCITY, 0, 0, 0);
     alSourcei(source, AL_LOOPING, AL_TRUE);
     // dans un cone d'angle [-inner/2,inner/2] il n'y a pas d'attenuation
-    alSourcef(source, AL_CONE_INNER_ANGLE, 10);
+    alSourcef(source, AL_CONE_INNER_ANGLE, 45);
     // dans un cone d'angle [-outer/2,outer/2] il y a une attenuation linéaire entre 0 et le gain
     alSourcef(source, AL_CONE_OUTER_GAIN, 0);
-    alSourcef(source, AL_CONE_OUTER_ANGLE, 30);
+    alSourcef(source, AL_CONE_OUTER_ANGLE, 90);
     // à l'extérieur de [-outer/2,outer/2] il y a une attenuation totale
 
     alDistanceModel(AL_NONE);
@@ -89,6 +89,11 @@ void Duck::setSound(bool b)
 	if (m_Sound && !b) alSourceStop(source);
 	if (!m_Sound && b) alSourcePlay(source);
 	m_Sound = b;
+}
+
+void Duck::setIsDiscovered(bool isDiscovered) 
+{
+    m_isDiscovered = isDiscovered;
 }
 
 /**
@@ -152,6 +157,10 @@ void Duck::setOrientation(vec3 ori)
     vec3::copy(m_Orientation, ori);
 }
 
+bool Duck::isDiscovered()
+{
+    return m_isDiscovered;
+}
 
 /** destructeur */
 Duck::~Duck()
