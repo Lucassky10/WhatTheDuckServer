@@ -18,9 +18,16 @@ class ConfigJSON : public Config
         {
             ifstream ifs("config.json");
             Json::Reader reader;
+            //TODO: cast to Duck object
             Json::Value config;
-            reader.parse(ifs, config);     // Reader can also read strings
+            reader.parse(ifs, config);
+            // Number of ducks
             cout << "Number of duck: " << config["numberOfDuck"].asString() << endl;
+            // Sound played
+            cout << "Sound played: " << config["soundPlayed"].asString() << endl;
+            /* Ducks */
+            // TODO: load ducks
+            //string ducks = config["ducks"];
         }
 };
 
