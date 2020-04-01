@@ -1,4 +1,4 @@
-# What the duck
+# What the duck!
 
 ## Installation
 
