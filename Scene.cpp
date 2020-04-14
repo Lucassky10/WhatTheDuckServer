@@ -12,23 +12,12 @@
 
 #include "Scene.h"
 
-
 /** constructeur */
 Scene::Scene()
 {
-    // créer les objets à dessiner
-    m_Duck_ch1 = new Duck();
-    m_Duck_ch1->setPosition(vec3::fromValues(-5.0, 0.0, -10.0));
-    m_Duck_ch1->setOrientation(vec3::fromValues(0.0, Utils::radians(0), 0.0));
-    m_Duck_ch1->setDraw(false);
-    m_Duck_ch1->setSound(true);
-
-    m_Duck_ch2 = new Duck();
-    m_Duck_ch2->setPosition(vec3::fromValues(5.0, 0.0, -10.0));
-    m_Duck_ch2->setOrientation(vec3::fromValues(0.0, Utils::radians(90), 0.0));
-    m_Duck_ch2->setDraw(false);
-    m_Duck_ch2->setSound(true);
-
+    // Load config
+    ConfigJSON *configJSON = new ConfigJSON();
+    ducks = configJSON->loadConfig();
 
     m_Ground = new Ground();
 
@@ -187,25 +176,20 @@ void Scene::onDrawFrame()
     mat4 tmp_v;
     vec4 pos;
 
-    mat4::translate(tmp_v, m_MatV, m_Duck_ch1->getPosition());
-    vec4::transformMat4(pos, vec4::fromValues(0,0,0,1), tmp_v);
-    if (!m_Duck_ch1->isDiscovered() && vec4::length(pos) < 5) {
-        //TODO : N'afficher qu'une fois ce message
-    	std::cout<<"Canard 1 trouvé !" <<std::endl;
-    	m_Duck_ch1->setDraw(true);
-    	m_Duck_ch1->setSound(false);
-        m_Duck_ch1->setIsDiscovered(true);
+    //TODO: what is for?
+    /*
+    for(Duck &duck : ducks) {
+        mat4::translate(tmp_v, m_MatV, duck.getPosition());
+        vec4::transformMat4(pos, vec4::fromValues(0,0,0,1), tmp_v);
+        if (!duck.isDiscovered() && vec4::length(pos) < 5) {
+            //TODO : N'afficher qu'une fois ce message
+            std::cout<<"Canard 1 trouvé !" <<std::endl;
+            duck.setDraw(true);
+            duck.setSound(false);
+            duck.setIsDiscovered(true);
+        }        
     }
-
-    mat4::translate(tmp_v, m_MatV, m_Duck_ch2->getPosition());
-    vec4::transformMat4(pos, vec4::fromValues(0,0,0,1), tmp_v);
-    if (!m_Duck_ch2->isDiscovered() && vec4::length(pos) < 5) {
-        //TODO : N'afficher qu'une fois ce message
-    	std::cout<<"Canard 2 trouvé !" <<std::endl;
-    	m_Duck_ch2->setDraw(true);
-    	m_Duck_ch2->setSound(false);
-        m_Duck_ch2->setIsDiscovered(true);
-    }
+    */
 
     /** gestion des lampes **/
 
@@ -214,9 +198,11 @@ void Scene::onDrawFrame()
 
     // fournir position et direction en coordonnées caméra aux objets éclairés
     m_Ground->setLight(m_Light);
-    m_Duck_ch1->setLight(m_Light);
-    m_Duck_ch2->setLight(m_Light);
-
+    /*
+    for(Duck &duck : ducks) {
+        duck.setLight(m_Light);
+    }
+    */
 
     /** dessin de l'image **/
 
@@ -227,17 +213,17 @@ void Scene::onDrawFrame()
     m_Ground->onDraw(m_MatP, m_MatV);
 
     // dessiner le canard en mouvement
-    m_Duck_ch1->onRender(m_MatP, m_MatV);
-
-    m_Duck_ch2->onRender(m_MatP, m_MatV);
-
+    /*
+    for(Duck &duck : ducks) {
+        duck.onRender(m_MatP, m_MatV);
+    }
+    */
 }
 
 
 /** supprime tous les objets de cette scène */
 Scene::~Scene()
 {
-    delete m_Duck_ch1;
-    delete m_Duck_ch2;
+    delete ducks;
     delete m_Ground;
 }

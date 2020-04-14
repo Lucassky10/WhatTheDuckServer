@@ -1,0 +1,44 @@
+{
+    "numberOfDucks": 3,
+    "ducks": [
+      {
+        "sound": "data/Duck-quacking-sound.wav",
+        "position": {
+          "x": -10,
+          "y": -5,
+          "z": 0
+        },
+        "orientation": {
+          "x": 0,
+          "y": -45,
+          "z": 12
+        }
+      },
+      {
+        "sound": "data/Duck-quacking-sound.wav",
+        "position": {
+          "x": 10,
+          "y": 5,
+          "z": 0
+        },
+        "orientation": {
+          "x": 0,
+          "y": 45,
+          "z": 12
+        }
+      },
+      {
+        "sound": "data/white_noise.wav",
+        "position": {
+          "x": 0,
+          "y": 5,
+          "z": 6
+        },
+        "orientation": {
+          "x": 0,
+          "y": 45,
+          "z": 0
+        }
+      }
+    ]
+  }

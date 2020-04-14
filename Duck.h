@@ -13,13 +13,15 @@ class Duck: public Mesh
 {
 private:
 
+    // TODO: add ID
+
     /** matériau */
     MaterialTexture* m_Material;
 
 
     /** buffers pour la gestion du son */
     ALuint buffer, source;
-
+    
     /** position 3D du cube */
     vec3 m_Position;
 
@@ -38,6 +40,20 @@ public:
 
     /** destructeur, libère le maillage et l'audio */
     ~Duck();
+
+    /**
+     *  Parameterized constructor, create mesh
+     * @param sound : sound pathname
+     * @param position : position vector
+     * @param orientation : orientation vector
+     */
+    Duck(const char* sound, vec3 position, vec3 orientation);
+
+    /**
+     * Create mesh
+     * @param soundPathname : sound pathname
+     */
+    void init(const char* soundPathname);
 
     /**
      * dessiner le canard

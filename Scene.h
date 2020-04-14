@@ -9,6 +9,7 @@
 
 #include "Duck.h"
 #include "Ground.h"
+#include "Config.h"
 
 
 class Scene
@@ -16,8 +17,7 @@ class Scene
 private:
 
     // objets de la scène
-    Duck* m_Duck_ch1;
-    Duck* m_Duck_ch2;
+    Duck *ducks;
     Ground* m_Ground;
 
     // lampes

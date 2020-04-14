@@ -23,6 +23,17 @@ using namespace mesh;
 /** constructeur */
 Duck::Duck(): Mesh("Duck")
 {
+    init("data/Duck-quacking-sound.wav");
+}
+
+// Parameterized constructor 
+Duck::Duck(const char* sound, vec3 position, vec3 orientation): Mesh("Duck") {
+    m_Position = position;
+    m_Orientation = orientation;
+    init(sound);
+}
+
+void Duck::init(const char* soundPathname) {
     // matériaux
     m_Material = new MaterialTexture("data/10602_Rubber_Duck_v1_diffuse.jpg");
     setMaterials(m_Material);
@@ -43,10 +54,9 @@ Duck::Duck(): Mesh("Duck")
     computeNormals();
 
     // ouverture du flux audio à placer dans le buffer
-    std::string soundpathname = "data/Duck-quacking-sound.wav";
-    buffer = alutCreateBufferFromFile(soundpathname.c_str());
+    buffer = alutCreateBufferFromFile(soundPathname);
     if (buffer == AL_NONE) {
-        std::cerr << "unable to open file " << soundpathname << std::endl;
+        std::cerr << "unable to open file " << soundPathname << std::endl;
         alGetError();
         throw std::runtime_error("file not found or not readable");
     }
