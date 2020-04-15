@@ -17,7 +17,7 @@ class Scene
 private:
 
     // objets de la scène
-    Duck *ducks;
+    std::vector<Duck*> ducks;
     Ground* m_Ground;
 
     // lampes

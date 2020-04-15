@@ -4,14 +4,14 @@
 
 using namespace std;
 
-Duck *ConfigJSON::loadConfig()
+vector<Duck *> ConfigJSON::loadConfig()
 {
     ifstream ifs("config.json");
     Json::Reader reader;
     Json::Value config;
     reader.parse(ifs, config);
 
-    Duck *ducks[config["numberOfDucks"].asInt()];
+    vector<Duck*> ducks;
     int duckNumber = 0;
 
     for (const auto &jsonDuck : config["ducks"])
@@ -36,13 +36,13 @@ Duck *ConfigJSON::loadConfig()
         cout << duckNumber << " " << sound << " " << xPosition << " " << yPosition << " " << zPosition << " " << xOrientation << " " << yOrientation << " " << zOrientation << endl;
 
         // Create Duck
-        Duck *duck = new Duck(sound, position, orientation);
+        Duck *duck = new Duck(duckNumber, sound, position, orientation);
         // Add duck to array
-        ducks[duckNumber] = duck;
+        ducks.push_back(duck);
 
         // Increment duck number
         duckNumber++;
     }
 
-    return *ducks;
+    return ducks;
 }

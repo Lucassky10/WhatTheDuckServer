@@ -177,19 +177,16 @@ void Scene::onDrawFrame()
     vec4 pos;
 
     //TODO: what is for?
-    /*
-    for(Duck &duck : ducks) {
-        mat4::translate(tmp_v, m_MatV, duck.getPosition());
+    for(Duck *duck : ducks) {
+        mat4::translate(tmp_v, m_MatV, duck->getPosition());
         vec4::transformMat4(pos, vec4::fromValues(0,0,0,1), tmp_v);
-        if (!duck.isDiscovered() && vec4::length(pos) < 5) {
-            //TODO : N'afficher qu'une fois ce message
-            std::cout<<"Canard 1 trouvé !" <<std::endl;
-            duck.setDraw(true);
-            duck.setSound(false);
-            duck.setIsDiscovered(true);
+        if (!duck->isDiscovered() && vec4::length(pos) < 5) {
+            std::cout<<"Canard " << duck->getId() << " trouvé !" <<std::endl;
+            duck->setDraw(true);
+            duck->setSound(false);
+            duck->setIsDiscovered(true);
         }        
     }
-    */
 
     /** gestion des lampes **/
 
@@ -198,11 +195,9 @@ void Scene::onDrawFrame()
 
     // fournir position et direction en coordonnées caméra aux objets éclairés
     m_Ground->setLight(m_Light);
-    /*
-    for(Duck &duck : ducks) {
-        duck.setLight(m_Light);
+    for(Duck *duck : ducks) {
+        duck->setLight(m_Light);
     }
-    */
 
     /** dessin de l'image **/
 
@@ -213,17 +208,15 @@ void Scene::onDrawFrame()
     m_Ground->onDraw(m_MatP, m_MatV);
 
     // dessiner le canard en mouvement
-    /*
-    for(Duck &duck : ducks) {
-        duck.onRender(m_MatP, m_MatV);
+    for(Duck *duck : ducks) {
+        duck->onRender(m_MatP, m_MatV);
     }
-    */
 }
 
 
 /** supprime tous les objets de cette scène */
 Scene::~Scene()
 {
-    delete ducks;
+    delete &ducks;
     delete m_Ground;
 }

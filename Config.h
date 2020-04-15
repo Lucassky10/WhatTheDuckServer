@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector> 
 #include <jsoncpp/json/json.h>
 #include <gl-matrix.h>
 #include <string.h>
@@ -16,14 +17,14 @@ class Config
 public:
 
     virtual ~Config() {}
-    virtual Duck *loadConfig() = 0;
+    virtual std::vector<Duck *> loadConfig() = 0;
 };
 
 class ConfigJSON : public Config
 {
 public:
 
-    virtual Duck *loadConfig();
+    virtual std::vector<Duck *> loadConfig();
 };
 
 #endif

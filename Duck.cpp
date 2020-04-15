@@ -27,7 +27,8 @@ Duck::Duck(): Mesh("Duck")
 }
 
 // Parameterized constructor 
-Duck::Duck(const char* sound, vec3 position, vec3 orientation): Mesh("Duck") {
+Duck::Duck(int duckId, const char* sound, vec3 position, vec3 orientation): Mesh("Duck") {
+    id = duckId;
     m_Position = position;
     m_Orientation = orientation;
     init(sound);
@@ -79,6 +80,10 @@ void Duck::init(const char* soundPathname) {
     alDistanceModel(AL_NONE);
 }
 
+
+int Duck::getId() {
+    return id;   
+}
 
 /**
  * définit la lampe
