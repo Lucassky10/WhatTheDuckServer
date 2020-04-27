@@ -158,6 +158,8 @@ int main(int argc,char **argv)
     glfwSetKeyCallback(window, onKeyboard);
 
     // affichage du mode d'emploi
+    // cout : affichage à l'écran
+    // endl : end of line, à la ligne
     std::cout << "Usage:" << std::endl;
     std::cout << "Left button to rotate object" << std::endl;
     std::cout << "Q,D (axis x) A,W (axis y) Z,S (axis z) keys to move" << std::endl;

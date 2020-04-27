@@ -15,13 +15,16 @@
 
 #include <Ground.h>
 
+/* Ground.cpp et Duck.cpp sont dans le même namespace
+
+Permet d'utiliser les méthodes de Mesh.cpp sans que le nom de ces méthodes soit 
+en concurrence avec les noms de méthodes d'autres libs */
 using namespace mesh;
-
-
 
 /** constructeur */
 Ground::Ground(): Mesh("sol")
 {
+
     // matériaux
     m_Material = new MaterialTexture("data/ground.jpg", GL_LINEAR_MIPMAP_LINEAR, GL_REPEAT);
     setMaterials(m_Material);
