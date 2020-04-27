@@ -1,5 +1,1 @@
-# What the duck!
-
-## Installation
-
-* Install `libjsoncpp-dev`
+# What The Duck **Server version**
