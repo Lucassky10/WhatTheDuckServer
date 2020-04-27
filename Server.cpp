@@ -1,7 +1,11 @@
 #include "Server.h"
 
+using namespace std;
+
 void Server::init()
 {
+    cout << "Initialisation du serveur" << endl;
+
     // initialise all client_socket[] to 0 so not checked
     for (int i = 0; i < MAX_CLIENTS; i++)
     {
@@ -95,8 +99,10 @@ void Server::init()
             // inform user of socket number - used in send and receive commands
             printf("New connection , socket fd is %d , ip is : %s , port : %d \n", new_socket, inet_ntoa(address.sin_addr), ntohs(address.sin_port));
 
-            // send new connection greeting message
-            if (send(new_socket, FIRST_MESSAGE, strlen(FIRST_MESSAGE), 0) != strlen(FIRST_MESSAGE))
+            // send new connection with configuration message
+            vector<char> config = getConfiguration();
+
+            if (send(new_socket, config.data(), strlen(config.data()), 0) != strlen(config.data()))
             {
                 perror("send");
             }
@@ -129,26 +135,40 @@ void Server::init()
                 if ((valread = read(sd, buffer, 1024)) == 0)
                 {
                     // Somebody disconnected , get his details and print
-                    getpeername(sd, (struct sockaddr *)&address, \ 
-						(socklen_t *)&addrlen);
+                    getpeername(sd, (struct sockaddr *)&address, (socklen_t *)&addrlen);
                     printf("Host disconnected , ip %s , port %d \n",
                            inet_ntoa(address.sin_addr), ntohs(address.sin_port));
 
                     // Close the socket and mark as 0 in list for reuse
                     close(sd);
                     client_socket[i] = 0;
-                }
+                }   
 
                 // Echo back the message that came in
                 else
                 {
                     // set the string terminating NULL byte on the end
                     // of the data read
-                    printf("%s\n", buffer);
-                    buffer[valread] = 'Message receiverd from client\0';
+                    buffer[valread] = '\0';
                     send(sd, buffer, strlen(buffer), 0);
                 }
             }
         }
+    }
+}
+
+vector<char> Server::getConfiguration() {
+    //DEBUG
+    cout << "HELLO" << endl;
+    
+    // Read the file
+    ifstream file(CONFIG_FILENAME, ios::binary | ios::ate);
+    streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    vector<char> buffer(size);
+    if (file.read(buffer.data(), size))
+    {
+        return buffer;
     }
 }
