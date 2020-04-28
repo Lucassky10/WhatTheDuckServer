@@ -21,7 +21,7 @@
 #define FALSE 0
 #define PORT 8888
 #define MAX_CLIENTS 30
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 1024UL
 #define FIRST_MESSAGE "ECHO Daemon v1.0 \r\n"
 #define CONFIG_FILENAME "config.json"
 

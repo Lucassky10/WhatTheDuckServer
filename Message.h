@@ -3,15 +3,16 @@
 
 #include <string>
 
+#define DELIMITER "@"
+
 // Définition de la classe Message
 
 using namespace std;
 
 /* Enum: Message type */
-enum messageType { ASKING_CONFIGURATION, CONFIG, DUCK_FOUND, DUCK_FOUND_CLIENT, ALL_DUCKS_FOUND, COORDINATES };
-
+enum messageType { ASKING_CONFIGURATION, CONFIGURATION, DUCK_FOUND, DUCK_FOUND_CLIENT, ALL_DUCKS_FOUND, COORDINATES };
 /* Enum strings */
-static const string EnumMessageTypes[] = { "Demande de la configuration", "Configuration", "Canard trouvé", "Le client %s a trouvé %i canard(s)", "x: %i, y: %i, z: %i" };
+static const string enumMessageTypes[] = { "Demande de la configuration", "Configuration", "Canard trouvé", "Le client %s a trouvé %i canard(s)", "x: %i, y: %i, z: %i" };
 
 class Message
 {
@@ -22,7 +23,6 @@ public:
 
     virtual ~Message() {}
     virtual string constructMessage() = 0;
-    //virtual string getMessage() = 0;
     messageType getType();
     string getTextForEnum(int);
 };
@@ -38,18 +38,19 @@ public:
 };
 
 // 2. Config initialisation
-class ConfigMessage : public Message
+class ConfigurationMessage : public Message
 {
 private:
-    // Config type
-    messageType type = CONFIG;
 
     // Config (ducks)
-    char* data;
+    string data;
 
 public:
-    // Get config
-    char* getConfig();
+    ConfigurationMessage();
+    string constructMessage();
+    void setMessage(string);
+    string getData();
+    void setData(string);
 };
 
 // 3. Duck found

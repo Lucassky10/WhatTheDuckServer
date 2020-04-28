@@ -1,4 +1,5 @@
 #include "Server.h"
+#include "Message.h"
 
 using namespace std;
 
@@ -39,7 +40,7 @@ void Server::init()
         perror("bind failed");
         exit(EXIT_FAILURE);
     }
-    printf("Listener on port %d \n", PORT);
+    cout << "Listener on port " << PORT << endl;
 
     // try to specify maximum of 3 pending connections for the master socket
     if (listen(master_socket, 3) < 0)
@@ -82,7 +83,7 @@ void Server::init()
 
         if ((activity < 0) && (errno != EINTR))
         {
-            printf("select error");
+            cout << "select error" << endl;
         }
 
         // If something happened on the master socket ,
@@ -97,17 +98,15 @@ void Server::init()
             }
 
             // inform user of socket number - used in send and receive commands
-            printf("New connection , socket fd is %d , ip is : %s , port : %d \n", new_socket, inet_ntoa(address.sin_addr), ntohs(address.sin_port));
+            cout << "New connection , socket fd is " << new_socket << "ip is : " << inet_ntoa(address.sin_addr) << ", port : " << ntohs(address.sin_port) << endl;
 
-            // send new connection with configuration message
-            vector<char> config = getConfiguration();
+            // // send new connection with configuration message
+            // vector<char> config = getConfiguration();
 
-            if (send(new_socket, config.data(), strlen(config.data()), 0) != strlen(config.data()))
-            {
-                perror("send");
-            }
-
-            puts("Welcome message sent successfully");
+            // if (send(new_socket, config.data(), strlen(config.data()), 0) != strlen(config.data()))
+            // {
+            //     perror("send");
+            // }
 
             // add new socket to array of sockets
             for (int i = 0; i < MAX_CLIENTS; i++)
@@ -116,7 +115,7 @@ void Server::init()
                 if (client_socket[i] == 0)
                 {
                     client_socket[i] = new_socket;
-                    printf("Adding to list of sockets as %d\n", i);
+                    cout << "Adding to list of sockets as " << i << endl;
 
                     break;
                 }
@@ -132,12 +131,11 @@ void Server::init()
             {
                 // Check if it was for closing
                 // read also the incoming message
-                if ((valread = read(sd, buffer, 1024)) == 0)
+                if ((valread = read(sd, buffer, BUFFER_SIZE)) == 0)
                 {
                     // Somebody disconnected , get his details and print
                     getpeername(sd, (struct sockaddr *)&address, (socklen_t *)&addrlen);
-                    printf("Host disconnected , ip %s , port %d \n",
-                           inet_ntoa(address.sin_addr), ntohs(address.sin_port));
+                    cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << ", port " << ntohs(address.sin_port) << endl;
 
                     // Close the socket and mark as 0 in list for reuse
                     close(sd);
@@ -147,32 +145,54 @@ void Server::init()
                 // Echo back the message that came in
                 else
                 {
-                    // Get message type
-                    printf("TEST: Message reçu -> %s", buffer);
-                    // Check if the message received is "asking configuration"
+                    // Parse buffer
+                    string message(buffer);
 
-                    // set the string terminating NULL byte on the end
-                    // of the data read
+                    // Elements
+                    vector<string> elts;
+
+                    size_t position;
+                    string elt;
+                    while ((position = message.find(DELIMITER)) != string::npos) {
+                        elt = message.substr(0, position);
+                        elts.push_back(elt);
+                        message.erase(0, position + strlen(DELIMITER));
+                    }
+                    elts.push_back(message);
+
+                    // Get message type
+                    int messageTypeNumber = stoi(elts[0]);
+                    enum messageType type = static_cast<messageType>(messageTypeNumber);
+
+                    // Check if the message received is "asking configuration"
+                    if(type == ASKING_CONFIGURATION) {
+                        // Get config data
+                        vector<char> config = getConfiguration();
+
+                        // Construct configuration message
+                        ConfigurationMessage *configurationMessage = new ConfigurationMessage();
+                        configurationMessage->setMessage(config.data());
+                        string message = configurationMessage->constructMessage();
+                        cout << "Sending configuration" << endl;
+                        send(sd, message.c_str(), strlen(message.c_str()), 0);
+                    }
+
+                    // set the string terminating NULL byte on the end of the data read
                     buffer[valread] = '\0';
-                    send(sd, buffer, strlen(buffer), 0);
                 }
             }
         }
     }
 }
 
-vector<char> Server::getConfiguration() {
-    //DEBUG
-    cout << "HELLO" << endl;
-    
+vector<char> Server::getConfiguration() {    
     // Read the file
     ifstream file(CONFIG_FILENAME, ios::binary | ios::ate);
     streamsize size = file.tellg();
     file.seekg(0, std::ios::beg);
 
     vector<char> buffer(size);
-    if (file.read(buffer.data(), size))
-    {
-        return buffer;
-    }
+    file.read(buffer.data(), size);
+
+    return buffer;
 }
