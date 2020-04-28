@@ -147,6 +147,10 @@ void Server::init()
                 // Echo back the message that came in
                 else
                 {
+                    // Get message type
+                    printf("TEST: Message reçu -> %s", buffer);
+                    // Check if the message received is "asking configuration"
+
                     // set the string terminating NULL byte on the end
                     // of the data read
                     buffer[valread] = '\0';

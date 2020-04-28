@@ -4,7 +4,7 @@
       "sound": "data/Duck-quacking-sound.wav",
       "position": {
         "x": -10,
-        "y": -5,
+        "y": 0,
         "z": 0
       },
       "orientation": {
@@ -17,7 +17,7 @@
       "sound": "data/Duck-quacking-sound.wav",
       "position": {
         "x": 10,
-        "y": 5,
+        "y": 0,
         "z": 0
       },
       "orientation": {
@@ -30,7 +30,7 @@
       "sound": "data/white_noise.wav",
       "position": {
         "x": 0,
-        "y": 5,
+        "y": 0,
         "z": 6
       },
       "orientation": {
