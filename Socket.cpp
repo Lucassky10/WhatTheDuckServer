@@ -54,11 +54,15 @@ void Socket::action(string message) {
     // Do action according by message type
     switch(type) {
         case ASKING_CONFIGURATION:
-            cout << "Action: " << enumMessageTypes[ASKING_CONFIGURATION] << endl;
+            cout << "Action: " << enumMessageTypes[ASKING_CONFIGURATION] << endl;            
             break;
         case CONFIGURATION:
-            cout << "Action: " << enumMessageTypes[CONFIGURATION] << endl;
+            cout << "Action: " << enumMessageTypes[CONFIGURATION] << endl;  
             Socket::configuration(elts);
+            break;
+        case COORDINATES:
+            //TODO: replace {} by x, y, z
+            cout << "Action: " << enumMessageTypes[COORDINATES] << endl;
             break;
         default:
             cout << "Message type unknown!" << endl;
@@ -73,7 +77,7 @@ void Socket::configuration(vector<string> elts) {
     // Write config file
     cout << "Tentative de récupération du fichier de configuration" << endl;
     ofstream configFile;
-    configFile.open(CONFIG_FILENAME);
+    configFile.open(CLIENT_CONFIG_FILENAME);
     configFile << configurationMessage->getData() << endl;
     cout << "Récupération du fichier de configuration OK" << endl;
 }

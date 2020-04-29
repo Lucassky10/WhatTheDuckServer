@@ -18,13 +18,16 @@
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
 #include <array>
 
+#include "Message.h"
+#include "Socket.h"
+
 #define TRUE 1
 #define FALSE 0
 #define PORT 8888
 #define MAX_CLIENTS 30
 #define BUFFER_SIZE 1024UL
 #define FIRST_MESSAGE "ECHO Daemon v1.0 \r\n"
-#define CONFIG_FILENAME "config.json"
+#define SERVER_CONFIG_FILENAME "config.json"
 
 class Server
 {

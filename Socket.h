@@ -15,7 +15,7 @@
 #define BUFFER_SIZE 1024UL
 
 /* Asking configuration */
-#define CONFIG_FILENAME ".config.json"
+#define CLIENT_CONFIG_FILENAME ".config.json"
 
 // Définition de la classe Socket
 

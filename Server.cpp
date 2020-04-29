@@ -1,5 +1,4 @@
 #include "Server.h"
-#include "Message.h"
 
 using namespace std;
 
@@ -193,7 +192,10 @@ void Server::init()
                                 //send(client_socket[i], message.c_str(), strlen(message.c_str()), 0);
                             }
                         }
-                    }
+                    } 
+                    else if (type == COORDINATES) {
+                        Socket::action(message);
+                    } 
 
                     // set the string terminating NULL byte on the end of the data read
                     buffer[valread] = '\0';
@@ -205,7 +207,7 @@ void Server::init()
 
 vector<char> Server::getConfiguration() {    
     // Read the file
-    ifstream file(CONFIG_FILENAME, ios::binary | ios::ate);
+    ifstream file(SERVER_CONFIG_FILENAME, ios::binary | ios::ate);
     streamsize size = file.tellg();
     file.seekg(0, std::ios::beg);
 
