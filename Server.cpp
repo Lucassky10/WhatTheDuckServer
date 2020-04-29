@@ -99,14 +99,6 @@ void Server::init()
             // inform user of socket number - used in send and receive commands
             cout << "New connection , socket fd is " << new_socket << "ip is : " << inet_ntoa(address.sin_addr) << ", port : " << ntohs(address.sin_port) << endl;
 
-            // // send new connection with configuration message
-            // vector<char> config = getConfiguration();
-
-            // if (send(new_socket, config.data(), strlen(config.data()), 0) != strlen(config.data()))
-            // {
-            //     perror("send");
-            // }
-
             // add new socket to array of sockets
             for (int i = 0; i < MAX_CLIENTS; i++)
             {
@@ -165,17 +157,17 @@ void Server::init()
                         Socket::sendMessage(sd, message);
                     } 
                     /* Duck found */
-                    else if(type == DUCK_FOUND) {
-
+                    else if(type == DUCK_FOUND) 
+                    {
                         for(Client *client : client_pool) {
-                            
                             if(client->getId() != sd) {
                                 client->addDuck();
-                                string message = "Le client" + to_string(client->getId()) + "a trouvé" + to_string(client->getDuckNumber()) + "canard(s)";
+                                string message = "6@Le client " + to_string(client->getId()) + " a trouvé " + to_string(client->getDuckNumber()) + " canard(s)";
                                 Socket::sendMessage(client->getId(), message);
                             }
                         }
-                    } else {
+                    } 
+                    else {
                         Socket::action(message);
                     }
 

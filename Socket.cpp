@@ -17,6 +17,7 @@ string Socket::receiveMessage(int socket, char buffer[BUFFER_SIZE]) {
     } else {
         message = "-1";
     }
+
     return message;
 }
 
@@ -61,7 +62,7 @@ void Socket::action(string message) {
             cout << "Action: Coordonnées x: " << elts[1] << ", y: " << elts[2] << ", z: " << elts[3] << endl;
             break;
         default:
-            cout << "Message type unknown!" << endl;
+            cout << elts[1] << endl;
     }
 }
 

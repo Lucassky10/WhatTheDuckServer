@@ -25,19 +25,6 @@
         "y": 45,
         "z": 12
       }
-    },
-    {
-      "sound": "data/white_noise.wav",
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 6
-      },
-      "orientation": {
-        "x": 0,
-        "y": 45,
-        "z": 0
-      }
     }
   ]
 }
