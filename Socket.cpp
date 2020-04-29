@@ -12,7 +12,6 @@ string Socket::receiveMessage(int socket, char buffer[BUFFER_SIZE]) {
     int valread;
     string message;
     if ((valread = read(socket, buffer, BUFFER_SIZE)) > 0) {
-        cout << "Receiving message, processing..." << endl;    
         message = buffer;
     } else {
         message = "-1";

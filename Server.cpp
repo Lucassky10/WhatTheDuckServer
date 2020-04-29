@@ -9,7 +9,6 @@ void Server::init()
 
     ConfigJSON *configJSON = new ConfigJSON();
     int ducksNumber = configJSON->getDucksNumber();
-    cout << "Number of ducks: " << ducksNumber << endl;
 
     // initialise all client_socket[] to 0 so not checked
     for (int i = 0; i < MAX_CLIENTS; i++)
@@ -167,7 +166,6 @@ void Server::init()
                     /* Duck found */
                     else if(type == DUCK_FOUND) 
                     {
-                        cout << "Current socket: " << sd << endl;
 
                         int idPersonWhoFoundDuck = 0;
                         int duckNumberPersonWhoFoundDuck = 0;
@@ -225,7 +223,6 @@ void Server::processing(int type, string message, std::vector<Client *> client_p
 {
     if (type == DUCK_FOUND)
     {
-        cout << "Current socket: " << sd << endl;
 
         int idPersonWhoFoundDuck = 0;
         int duckNumberPersonWhoFoundDuck = 0;
