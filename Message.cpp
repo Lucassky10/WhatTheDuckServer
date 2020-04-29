@@ -61,6 +61,7 @@ string ConfigurationMessage::getData() {
 }
 
 /**
+<<<<<<< Updated upstream
  * All Ducks Found Message
  */
 

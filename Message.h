@@ -66,6 +66,7 @@ private:
 public:
     // Get duck id
     int getDuckId();
+    void setDuckId();
 };
 
 // 4. Duck found by a client

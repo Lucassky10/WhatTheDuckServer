@@ -145,6 +145,8 @@ void Server::init()
                 // Echo back the message that came in
                 else
                 {
+                    cout << "MESSAGE" << endl;
+
                     // Parse buffer
                     string message(buffer);
 
@@ -163,11 +165,12 @@ void Server::init()
                     // Get message type
                     int messageTypeNumber = stoi(elts[0]);
                     enum messageType type = static_cast<messageType>(messageTypeNumber);
+                    cout << "TYPE: " << type << endl;
 
                     // Check if the message received is "asking configuration"
                     if(type == ASKING_CONFIGURATION) {
                         // Get config data
-                        vector<char> config = getConfiguration();
+                        vector<char> config = Server::getConfiguration();
 
                         // Construct configuration message
                         ConfigurationMessage *configurationMessage = new ConfigurationMessage();
@@ -175,6 +178,21 @@ void Server::init()
                         string message = configurationMessage->constructMessage();
                         cout << "Sending configuration" << endl;
                         send(sd, message.c_str(), strlen(message.c_str()), 0);
+
+                    }
+
+                    if(type == DUCK_FOUND) {
+
+                        cout << "Current socket: " << sd << endl;
+                        for(int i = 0; i < MAX_CLIENTS; i++) {
+                            cout << "All sockets: " << to_string(client_socket[i]) << endl;
+                            
+                            if(client_socket[i] != sd && client_socket[i] > 0) {
+                                cout << "Send to " + to_string(client_socket[i]) + " that client " << sd << " found a duck" << endl;
+
+                                //send(client_socket[i], message.c_str(), strlen(message.c_str()), 0);
+                            }
+                        }
                     }
 
                     // set the string terminating NULL byte on the end of the data read

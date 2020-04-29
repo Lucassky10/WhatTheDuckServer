@@ -1,6 +1,7 @@
 {
   "ducks": [
     {
+      "_id": 0,
       "sound": "data/Duck-quacking-sound.wav",
       "position": {
         "x": -10,
@@ -14,6 +15,7 @@
       }
     },
     {
+      "_id": 1,
       "sound": "data/Duck-quacking-sound.wav",
       "position": {
         "x": 10,
@@ -27,6 +29,7 @@
       }
     },
     {
+      "_id": 2,
       "sound": "data/white_noise.wav",
       "position": {
         "x": 0,
