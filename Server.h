@@ -17,6 +17,7 @@
 #include <netinet/in.h>
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
 #include <array>
+#include "Client.h"
 
 #include "Message.h"
 #include "Socket.h"
@@ -46,6 +47,8 @@ private:
 
     // Socket of clients
     int client_socket[MAX_CLIENTS];
+
+    std::vector<Client*> client_pool;
 
     // select() return file descriptor number
     // select return
