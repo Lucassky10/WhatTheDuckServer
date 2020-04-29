@@ -1,12 +1,14 @@
 #include "Server.h"
-#include "Message.h"
-#include "Socket.h"
 
 using namespace std;
 
 void Server::init()
 {
     cout << "Initialisation du serveur" << endl;
+
+    ConfigJSON *configJSON = new ConfigJSON();
+    int ducksNumber = configJSON->getDucksNumber();
+    cout << "Number of ducks: " << ducksNumber << endl;
 
     // initialise all client_socket[] to 0 so not checked
     for (int i = 0; i < MAX_CLIENTS; i++)

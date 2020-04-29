@@ -21,6 +21,7 @@
 
 #include "Message.h"
 #include "Socket.h"
+#include "Config.h"
 
 #define TRUE 1
 #define FALSE 0
