@@ -145,34 +145,17 @@ void Server::init()
                 // Echo back the message that came in
                 else
                 {
-                    // Parse buffer
+                    // Get message
                     string message(buffer);
+                        
+                    // Parse and get message type
+                    vector<string> elts = Socket::parseMessage(message);
+                    enum messageType type = Socket::getMessageType(message);
 
-                    // Elements
-                    vector<string> elts;
-
-                    size_t position;
-                    string elt;
-                    while ((position = message.find(DELIMITER)) != string::npos) {
-                        elt = message.substr(0, position);
-                        elts.push_back(elt);
-                        message.erase(0, position + strlen(DELIMITER));
-                    }
-                    elts.push_back(message);
-
-                    // Get message type
-                    int messageTypeNumber = stoi(elts[0]);
-                    enum messageType type = static_cast<messageType>(messageTypeNumber);
-                    cout << "TYPE: " << type << endl;
-
-                    // Check if the message received is "asking configuration"
+                    /* Asking configuration */
                     if(type == ASKING_CONFIGURATION) {
-
-                        cout << "type == configuration" << endl;
                         // Get config data
                         vector<char> config = Server::getConfiguration();
-
-                        cout << "got configuration" << endl;
 
                         // Construct configuration message
                         ConfigurationMessage *configurationMessage = new ConfigurationMessage();
@@ -180,12 +163,9 @@ void Server::init()
                         string message = configurationMessage->constructMessage();
                         cout << "Sending configuration" << endl;
                         Socket::sendMessage(sd, message);
-
-                    }
-
-                    if(type == DUCK_FOUND) {
-
-                        cout << "Current socket: " << sd << endl;
+                    } 
+                    /* Duck found */
+                    else if(type == DUCK_FOUND) {
 
                         for(Client *client : client_pool) {
                             
@@ -195,10 +175,9 @@ void Server::init()
                                 Socket::sendMessage(client->getId(), message);
                             }
                         }
-                    } 
-                    else if (type == COORDINATES) {
+                    } else {
                         Socket::action(message);
-                    } 
+                    }
 
                     // set the string terminating NULL byte on the end of the data read
                     buffer[valread] = '\0';

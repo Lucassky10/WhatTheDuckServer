@@ -4,23 +4,20 @@ using namespace std;
 
 // Send socket message
 void Socket::sendMessage(int socket, string message) {
-    cout << "Sending message: " << enumMessageTypes[ASKING_CONFIGURATION] << endl;
     send(socket, message.c_str(), strlen(message.c_str()), FLAG_0);
 }
 
 // Receive socket message
 string Socket::receiveMessage(int socket, char buffer[BUFFER_SIZE]) {
     int valread;
-    while (1) {
-        if ((valread = read(socket, buffer, BUFFER_SIZE)) > 0) {
-            cout << "Receiving message, processing..." << endl;
-            // TEMP: car trop volumineux
-            //cout << "Receiving message: " << buffer << endl;
-        
-            string message(buffer);
-            return message;
-        }
+    string message;
+    if ((valread = read(socket, buffer, BUFFER_SIZE)) > 0) {
+        cout << "Receiving message, processing..." << endl;    
+        message = buffer;
+    } else {
+        message = "-1";
     }
+    return message;
 }
 
 // Parse socket message
@@ -61,8 +58,7 @@ void Socket::action(string message) {
             Socket::configuration(elts);
             break;
         case COORDINATES:
-            //TODO: replace {} by x, y, z
-            cout << "Action: " << enumMessageTypes[COORDINATES] << endl;
+            cout << "Action: Coordonnées x: " << elts[1] << ", y: " << elts[2] << ", : " << elts[3] << endl;
             break;
         default:
             cout << "Message type unknown!" << endl;
@@ -75,7 +71,6 @@ void Socket::configuration(vector<string> elts) {
     configurationMessage->setMessage(elts[1]);
     
     // Write config file
-    cout << "Tentative de récupération du fichier de configuration" << endl;
     ofstream configFile;
     configFile.open(CLIENT_CONFIG_FILENAME);
     configFile << configurationMessage->getData() << endl;

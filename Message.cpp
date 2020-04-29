@@ -102,7 +102,10 @@ CoordinatesMessage::CoordinatesMessage() {
 
 // Construct coordinates message
 string CoordinatesMessage::constructMessage() {
-    message = to_string(type);
+    message = to_string(type) + DELIMITER 
+    + to_string(position[0]) + DELIMITER 
+    + to_string(position[1]) + DELIMITER 
+    + to_string(position[2]);
     return message;
 }
 
