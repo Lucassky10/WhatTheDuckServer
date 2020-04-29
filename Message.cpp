@@ -88,7 +88,7 @@ AllDucksFoundMessage::AllDucksFoundMessage() {
 
 // Construct all ducks found message
 string AllDucksFoundMessage::constructMessage() {
-    message = to_string(type);
+    message = to_string(type) + DELIMITER + enumMessageTypes[type];
     return message;
 }
 

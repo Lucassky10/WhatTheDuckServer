@@ -12,7 +12,7 @@ using namespace std;
 /* Enum: Message type */
 enum messageType { ASKING_CONFIGURATION, CONFIGURATION, DUCK_FOUND, DUCK_FOUND_CLIENT, ALL_DUCKS_FOUND, COORDINATES };
 /* Enum strings */
-static const string enumMessageTypes[] = { "Demande de la configuration", "Configuration", "Canard trouvé", "Le client %s a trouvé %i canard(s)", "Tous les canards ont été trouvés", "x: %i, y: %i, z: %i" };
+static const string enumMessageTypes[] = { "Demande de la configuration", "Configuration", "Canard trouvé", "Le client %s a trouvé %i canard(s)", "TOUS LES CANARDS ONT ETE TROUVES PAR LE CLIENT ", "x: %i, y: %i, z: %i" };
 
 class Message
 {
