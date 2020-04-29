@@ -12,7 +12,7 @@ using namespace std;
 /* Enum: Message type */
 enum messageType { ASKING_CONFIGURATION, CONFIGURATION, DUCK_FOUND, DUCK_FOUND_CLIENT, ALL_DUCKS_FOUND, COORDINATES };
 /* Enum strings */
-static const string enumMessageTypes[] = { "Demande de la configuration", "Configuration", "Canard trouvé", "Le client %s a trouvé %i canard(s)", "x: %i, y: %i, z: %i" };
+static const string enumMessageTypes[] = { "Demande de la configuration", "Configuration", "Canard trouvé", "Le client %s a trouvé %i canard(s)", "Tous les canards ont été trouvés", "x: %i, y: %i, z: %i" };
 
 class Message
 {
@@ -83,24 +83,24 @@ public:
 class AllDucksFoundMessage : public Message
 {
 private:
-    // All ducks found
-    messageType type = ALL_DUCKS_FOUND;
 
 public:
-    
+    AllDucksFoundMessage();
+    string constructMessage();    
 };
 
 // 6. Coordinates sent by client
 class CoordinatesMessage : public Message
 {
 private:
-    // Coordinates
-    messageType type = COORDINATES;
-
     // Position (x, y, z)
-    int position[];
+    int position[3];
 
 public:
+    CoordinatesMessage();
+    string constructMessage();
+    // Set position
+    void setPosition(int, int, int);
     // Get position
     int* getPosition();
 };
