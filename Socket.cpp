@@ -58,7 +58,7 @@ void Socket::action(string message) {
             Socket::configuration(elts);
             break;
         case COORDINATES:
-            cout << "Action: Coordonnées x: " << elts[1] << ", y: " << elts[2] << ", : " << elts[3] << endl;
+            cout << "Action: Coordonnées x: " << elts[1] << ", y: " << elts[2] << ", z: " << elts[3] << endl;
             break;
         default:
             cout << "Message type unknown!" << endl;
