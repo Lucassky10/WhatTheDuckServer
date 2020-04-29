@@ -61,7 +61,24 @@ string ConfigurationMessage::getData() {
 }
 
 /**
- * All Ducks Found Message
+ * Duck Found Message
+ */
+DuckFoundMessage::DuckFoundMessage() {
+    type = DUCK_FOUND;
+}
+
+// Construct configuration message
+string DuckFoundMessage::constructMessage() {
+    message = to_string(type) + DELIMITER + to_string(duckId);
+    return message;
+}
+
+void DuckFoundMessage::setDuckId(int id) {
+    duckId = id;
+}
+
+/*
+ *  All Ducks Found Message
  */
 
 AllDucksFoundMessage::AllDucksFoundMessage() {
