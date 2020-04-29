@@ -137,20 +137,21 @@ void Server::init()
                     // Close the socket and mark as 0 in list for reuse
                     close(sd);
                     client_socket[i] = 0;
-                }   
+                }
 
                 // Echo back the message that came in
                 else
                 {
                     // Get message
                     string message(buffer);
-                        
+
                     // Parse and get message type
                     vector<string> elts = Socket::parseMessage(message);
                     enum messageType type = Socket::getMessageType(message);
 
                     /* Asking configuration */
-                    if(type == ASKING_CONFIGURATION) {
+                    if (type == ASKING_CONFIGURATION)
+                    {
                         // Get config data
                         vector<char> config = Server::getConfiguration();
 
@@ -160,35 +161,11 @@ void Server::init()
                         string message = configurationMessage->constructMessage();
                         cout << "Sending configuration" << endl;
                         Socket::sendMessage(sd, message);
-                    } 
-                    /* Duck found */
-                    else if(type == DUCK_FOUND) 
-                    {
-                        cout << "Current socket: " << sd << endl;
-
-                        int idPersonWhoFoundDuck = 0;
-                        int duckNumberPersonWhoFoundDuck = 0;
-
-                        for(Client *client : client_pool) {
-
-                            if(client->getId() == sd) {
-                                client->addDuck();
-                                idPersonWhoFoundDuck = client->getId();
-                                duckNumberPersonWhoFoundDuck = client->getDuckNumber();
-                            }
-                        }
-
-                        for(Client *client : client_pool) {
-
-                            if(client->getId() != sd) {
-                                string message = "6@Le client " + to_string(idPersonWhoFoundDuck) + " a trouvé " + to_string(duckNumberPersonWhoFoundDuck) + " canard(s)";
-                                Socket::sendMessage(client->getId(), message);
-                            }
-                        }
-                            
                     }
-                    else {
-                        Socket::action(message);
+                    else 
+                    { 
+                        thread thread(Server::processing, type, message, client_pool, sd);
+                        thread.detach();
                     }
 
                     // set the string terminating NULL byte on the end of the data read
@@ -199,7 +176,44 @@ void Server::init()
     }
 }
 
-vector<char> Server::getConfiguration() {    
+void Server::processing(int type, string message, std::vector<Client *> client_pool, int sd)
+{
+    if (type == DUCK_FOUND)
+    {
+        cout << "Current socket: " << sd << endl;
+
+        int idPersonWhoFoundDuck = 0;
+        int duckNumberPersonWhoFoundDuck = 0;
+
+        for (Client *client : client_pool)
+        {
+
+            if (client->getId() == sd)
+            {
+                client->addDuck();
+                idPersonWhoFoundDuck = client->getId();
+                duckNumberPersonWhoFoundDuck = client->getDuckNumber();
+            }
+        }
+
+        for (Client *client : client_pool)
+        {
+
+            if (client->getId() != sd)
+            {
+                string message = "6@Le client " + to_string(idPersonWhoFoundDuck) + " a trouvé " + to_string(duckNumberPersonWhoFoundDuck) + " canard(s)";
+                Socket::sendMessage(client->getId(), message);
+            }
+        }
+    }
+    else
+    {
+        Socket::action(message);
+    }
+}
+
+vector<char> Server::getConfiguration()
+{
     // Read the file
     ifstream file(SERVER_CONFIG_FILENAME, ios::binary | ios::ate);
     streamsize size = file.tellg();

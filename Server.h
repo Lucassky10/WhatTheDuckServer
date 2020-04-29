@@ -17,8 +17,9 @@
 #include <netinet/in.h>
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
 #include <array>
-#include "Client.h"
+#include <thread>
 
+#include "Client.h"
 #include "Message.h"
 #include "Socket.h"
 #include "Config.h"
@@ -75,6 +76,7 @@ private:
 
 public:
     void init();
+    static void processing(int, string, std::vector<Client *>, int);
     std::vector<char> getConfiguration();
 };
 
