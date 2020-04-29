@@ -17,6 +17,7 @@
 #include <netinet/in.h>
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
 #include <array>
+#include "Client.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -24,7 +25,7 @@
 #define MAX_CLIENTS 30
 #define BUFFER_SIZE 1024UL
 #define FIRST_MESSAGE "ECHO Daemon v1.0 \r\n"
-#define CONFIG_FILENAME "config.json"
+#define CONFIG_FILENAME ".config.json"
 
 class Server
 {
@@ -43,6 +44,8 @@ private:
 
     // Socket of clients
     int client_socket[MAX_CLIENTS];
+
+    std::vector<Client*> client_pool;
 
     // select() return file descriptor number
     // select return
