@@ -11,7 +11,7 @@ void Server::init()
     // initialise all client_socket[] to 0 so not checked
     for (int i = 0; i < MAX_CLIENTS; i++)
     {
-        client_pool[i]->setId(0);
+        client_socket[i] = 0;
     }
 
     // create a master socket
@@ -67,7 +67,7 @@ void Server::init()
         for (int i = 0; i < MAX_CLIENTS; i++)
         {
             // socket descriptor
-            sd = client_pool[i]->getId();
+            sd = client_socket[i];
 
             // if valid socket descriptor then add to read list
             if (sd > 0)
@@ -113,8 +113,9 @@ void Server::init()
             for (int i = 0; i < MAX_CLIENTS; i++)
             {
                 // if position is empty
-                if (client_pool[i]->getId() == 0)
+                if (client_socket[i] == 0)
                 {
+                    client_socket[i] = new_socket;
                     client_pool.push_back(new Client(new_socket));
                     cout << "Adding to list of sockets as " << i << endl;
 
@@ -126,7 +127,7 @@ void Server::init()
         // else its some IO operation on some other socket
         for (int i = 0; i < MAX_CLIENTS; i++)
         {
-            sd = client_pool[i]->getId();
+            sd = client_socket[i];
 
             if (FD_ISSET(sd, &readfds))
             {
@@ -140,7 +141,7 @@ void Server::init()
 
                     // Close the socket and mark as 0 in list for reuse
                     close(sd);
-                    client_pool[i]->setId(0);
+                    client_socket[i] = 0;
                 }   
 
                 // Echo back the message that came in
