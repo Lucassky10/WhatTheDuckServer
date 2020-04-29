@@ -1,4 +1,6 @@
 #include "Server.h"
+#include "Message.h"
+#include "Socket.h"
 
 using namespace std;
 
@@ -107,6 +109,7 @@ void Server::init()
                 {
                     client_socket[i] = new_socket;
                     client_pool.push_back(new Client(new_socket));
+
                     cout << "Adding to list of sockets as " << i << endl;
 
                     break;
@@ -159,14 +162,29 @@ void Server::init()
                     /* Duck found */
                     else if(type == DUCK_FOUND) 
                     {
+                        cout << "Current socket: " << sd << endl;
+
+                        int idPersonWhoFoundDuck = 0;
+                        int duckNumberPersonWhoFoundDuck = 0;
+
                         for(Client *client : client_pool) {
-                            if(client->getId() != sd) {
+
+                            if(client->getId() == sd) {
                                 client->addDuck();
-                                string message = "6@Le client " + to_string(client->getId()) + " a trouvé " + to_string(client->getDuckNumber()) + " canard(s)";
+                                idPersonWhoFoundDuck = client->getId();
+                                duckNumberPersonWhoFoundDuck = client->getDuckNumber();
+                            }
+                        }
+
+                        for(Client *client : client_pool) {
+
+                            if(client->getId() != sd) {
+                                string message = "6@Le client " + to_string(idPersonWhoFoundDuck) + " a trouvé " + to_string(duckNumberPersonWhoFoundDuck) + " canard(s)";
                                 Socket::sendMessage(client->getId(), message);
                             }
                         }
-                    } 
+                            
+                    }
                     else {
                         Socket::action(message);
                     }

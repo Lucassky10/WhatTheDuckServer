@@ -7,7 +7,7 @@ Client::Client(int socketDescriptor) {
 }
 
 void Client::addDuck() {
-    setDuckNumber(getDuckNumber()+1);
+    setDuckNumber(duckNumber+1);
 }
 
 int Client::getDuckNumber() {
