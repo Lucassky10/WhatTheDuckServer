@@ -161,52 +161,9 @@ void Server::init()
                         string message = configurationMessage->constructMessage();
                         cout << "Sending configuration" << endl;
                         Socket::sendMessage(sd, message);
-
-                    } 
-                    /* Duck found */
-                    else if(type == DUCK_FOUND) 
-                    {
-
-                        int idPersonWhoFoundDuck = 0;
-                        int duckNumberPersonWhoFoundDuck = 0;
-
-                        ConfigJSON* config = new ConfigJSON();
-
-                        for(Client *client : client_pool) {
-
-                            if(client->getId() == sd) {
-                                client->addDuck();
-                                idPersonWhoFoundDuck = client->getId();
-                                duckNumberPersonWhoFoundDuck = client->getDuckNumber();
-                            }
-                        }
-
-                        for(Client *client : client_pool) {
-
-                            if(client->getId() != sd) {
-                                string message = "6@Le client " + to_string(idPersonWhoFoundDuck) + " a trouvé " + to_string(duckNumberPersonWhoFoundDuck) + " canard(s)";
-                                Socket::sendMessage(client->getId(), message);
-                            }
-                        }
-
-                        string messageToBeSent = "";
-                        int idWinner = 0;
-                        for(Client *client : client_pool) {
-                            if(client->getDuckNumber() == config->getDucksNumber()) {
-                                    AllDucksFoundMessage *message = new AllDucksFoundMessage();
-                                    messageToBeSent = message->constructMessage();
-                                    idWinner = client->getId();
-                            }
-                        }
-
-                        for(Client *client : client_pool) {
-                            Socket::sendMessage(client->getId(), messageToBeSent + to_string(idWinner));
-                        }
-
-
                     }
-                    else 
-                    { 
+                    else
+                    {
                         thread thread(Server::processing, type, message, client_pool, sd);
                         thread.detach();
                     }
@@ -221,15 +178,17 @@ void Server::init()
 
 void Server::processing(int type, string message, std::vector<Client *> client_pool, int sd)
 {
+    /* Duck found */
     if (type == DUCK_FOUND)
     {
 
         int idPersonWhoFoundDuck = 0;
         int duckNumberPersonWhoFoundDuck = 0;
 
+        ConfigJSON *config = new ConfigJSON();
+
         for (Client *client : client_pool)
         {
-
             if (client->getId() == sd)
             {
                 client->addDuck();
@@ -238,12 +197,29 @@ void Server::processing(int type, string message, std::vector<Client *> client_p
             }
         }
 
+        string messageToBeSent;
+        int idWinner = 0;
         for (Client *client : client_pool)
         {
-
             if (client->getId() != sd)
             {
                 string message = "6@Le client " + to_string(idPersonWhoFoundDuck) + " a trouvé " + to_string(duckNumberPersonWhoFoundDuck) + " canard(s)";
+                Socket::sendMessage(client->getId(), message);
+            }
+
+            if (client->getDuckNumber() == config->getDucksNumber())
+            {
+                AllDucksFoundMessage *message = new AllDucksFoundMessage();
+                messageToBeSent = message->constructMessage();
+                idWinner = client->getId();
+            }
+        }
+
+        if (idWinner != 0)
+        {
+            for (Client *client : client_pool)
+            {
+                string message = messageToBeSent + " par le client " + to_string(idWinner);
                 Socket::sendMessage(client->getId(), message);
             }
         }
